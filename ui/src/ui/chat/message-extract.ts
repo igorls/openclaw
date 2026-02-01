@@ -38,7 +38,7 @@ export function extractText(message: unknown): string | null {
   const m = message as Record<string, unknown>;
   const role = typeof m.role === "string" ? m.role : "";
   const roleLower = role.toLowerCase();
-  
+
   // Explicit tool roles should never be treated as narrative text
   const isExplicitToolRole =
     roleLower === "tool" ||
@@ -69,12 +69,12 @@ export function extractText(message: unknown): string | null {
         return null;
       })
       .filter((v): v is string => typeof v === "string");
-    
+
     if (parts.length > 0) {
       // If it's an explicit tool role, we still return null even if it has text blocks,
       // because that text is the tool output which should go in the card.
       if (isExplicitToolRole) return null;
-      
+
       const joined = parts.join("\n");
       const processed = role === "assistant" ? stripThinkingTags(joined) : stripEnvelope(joined);
       return processed;

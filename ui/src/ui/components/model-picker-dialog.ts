@@ -123,7 +123,7 @@ export function renderModelPickerDialog(props: ModelPickerDialogProps) {
           ${providers.map((provider) => {
             const models = grouped.get(provider) || [];
             if (models.length === 0) return nothing;
-            
+
             return html`
               <div class="model-picker-provider">
                 <div class="model-picker-provider-header">
@@ -135,7 +135,7 @@ export function renderModelPickerDialog(props: ModelPickerDialogProps) {
                   ${models.map((model) => {
                     const isSelected = model.id === props.currentModel;
                     const contextStr = formatContextWindow(model.contextWindow);
-                    
+
                     return html`
                       <button
                         class="model-picker-model ${isSelected ? "model-picker-model--selected" : ""}"
@@ -151,7 +151,13 @@ export function renderModelPickerDialog(props: ModelPickerDialogProps) {
                         </div>
                         <div class="model-picker-model-meta">
                           ${contextStr ? html`<span class="model-picker-model-context" title="Context window">${contextStr} ctx</span>` : nothing}
-                          ${model.reasoning ? html`<span class="model-picker-model-badge" title="Reasoning/thinking model">🧠</span>` : nothing}
+                          ${
+                            model.reasoning
+                              ? html`
+                                  <span class="model-picker-model-badge" title="Reasoning/thinking model">🧠</span>
+                                `
+                              : nothing
+                          }
                         </div>
                       </button>
                     `;
@@ -164,9 +170,12 @@ export function renderModelPickerDialog(props: ModelPickerDialogProps) {
         
         <div class="model-picker-footer">
           <div class="model-picker-current">
-            ${props.currentModel 
-              ? html`Current: <strong>${props.models.find((m) => m.id === props.currentModel)?.name || props.currentModel}</strong>`
-              : html`<em>No model selected</em>`
+            ${
+              props.currentModel
+                ? html`Current: <strong>${props.models.find((m) => m.id === props.currentModel)?.name || props.currentModel}</strong>`
+                : html`
+                    <em>No model selected</em>
+                  `
             }
           </div>
         </div>
